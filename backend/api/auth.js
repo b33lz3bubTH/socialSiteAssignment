@@ -20,7 +20,7 @@ router.post('/register', celebrate({
         console.log("User Data: ", userData);
 
         if (userData) {
-            throw new Error("Registration Failed")
+            throw new Error("Registration Failed");
         }
 
         const newUser = UserModel({
