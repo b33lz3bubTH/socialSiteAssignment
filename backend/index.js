@@ -13,7 +13,8 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/", ...Routes)
+app.use("/", ...Routes);
+app.use("/images", express.static('./uploads'));
 
 app.use(errors());
 
