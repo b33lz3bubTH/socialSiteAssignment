@@ -9,6 +9,8 @@ const UserModel = new Schema({
     password: { type: String, required: true},
     profilePictureMedia: { type: String, required: true},
     friendList: [{ type: Schema.Types.ObjectId, ref: 'SocialUserModelTable' }]
+}, {
+    timestamps: true
 });
 
 
