@@ -38,14 +38,23 @@ export default function ProfilePage(props) {
 
     return (
         <Container maxWidth="lg">
-            <div style={{marginTop: '5vh', marginBottom: '5vh', textAlign: 'right'}}>
+            <div style={{ marginTop: '5vh', marginBottom: '5vh', textAlign: 'center' }}>
                 {
-                    !(authstoreState?.isLoggedIn) ? <Link to="/sign-in">Not Logged In, Please Sign In</Link> :
+                    !(authstoreState?.isLoggedIn) ? <div>
+                        <img src="https://cdn.pixabay.com/photo/2020/05/18/16/17/social-media-5187243__340.png"
+                            style={{
+                                width: '100%',
+                                maxHeight: '30vh',
+                                objectFit: 'contain'
+                            }} />
+                        <h3>Sign Up Now!!!</h3>
+                        <Link to="/sign-in">Not Logged In, Please Sign In</Link>
+                    </div> :
                         <Button onClick={logOutController}>Logout</Button>
                 }
             </div>
 
-            <Tabs defaultValue="profile" style={{display : (authstoreState?.isLoggedIn) ? 'block' : 'none'}}>
+            <Tabs defaultValue="profile" style={{ display: (authstoreState?.isLoggedIn) ? 'block' : 'none' }}>
                 <Tabs.List>
                     <Tabs.Tab value="profile">Profile</Tabs.Tab>
                     <Tabs.Tab value="allUsers">All Users</Tabs.Tab>
