@@ -19,6 +19,8 @@ app.use(errors());
 app.use("/", ...Routes);
 app.use("/images", express.static('./uploads'));
 app.use("/ui", express.static('./build'));
+app.use("/static", express.static('./build/static'));
+
 
 Mongoose.connect(Config.mongoURI).then((connnecion) => {
   app.listen(Config.port, () => {
