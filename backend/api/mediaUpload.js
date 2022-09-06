@@ -40,18 +40,20 @@ router.post('/upload', function (req, res, next) {
     upload(req, res, function (e) {
         if (e) {
             console.log("err: ", e);
-            return res.status(500).json({
+            res.status(500).json({
                 api_response_info: {
                     status: 500,
                     message: e?.message
                 }, data: null
             });
         }
-        return res.status(200).json({
+        res.status(200).json({
             api_response_info: {
                 status: 200,
                 message: "media uploaded"
-            }, data: req.fileNameOfImage
+            }, data: {
+                fileName: req.fileNameOfImage
+            }
         });
     });
 });

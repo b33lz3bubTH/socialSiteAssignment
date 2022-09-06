@@ -6,6 +6,44 @@ import crypto from "crypto";
 const router = Router();
 
 
+
+router.post('/update/profile', celebrate({
+    [Segments.BODY]: {
+        email: Joi.string().required(),
+        name: Joi.string().required(),
+        profilePictureMedia: Joi.string().required(),
+    }
+}), async (req, res) => {
+    try {
+
+        const userData = await UserModel.findOneAndUpdate({ email: req.body.email }, {
+            profilePictureMedia: req.body.profilePictureMedia,
+            name: req.body.name,
+        });
+        console.log("User Data: ", userData);
+
+        if (!userData) {
+            throw new Error("Updadtion Failed");
+        }
+
+        res.status(200).json({
+            api_response_info: {
+                status: 200,
+                message: "Update Successful"
+            }, data: null
+        });
+    } catch (e) {
+        console.log("er: ", e);
+        res.status(500).json({
+            api_response_info: {
+                status: 200,
+                message: "Registration Failed"
+            }, data: null
+        });
+    }
+});
+
+
 router.post('/register', celebrate({
     [Segments.BODY]: {
         email: Joi.string().required(),
@@ -111,7 +149,7 @@ router.post("/login", celebrate({
 }), async (req, res) => {
 
     try {
-        const userData = await UserModel.findOne({ email: req.body.email, password: crypto.createHash('md5').update(req.body.password).digest('hex') }).populate("friendList");
+        const userData = await UserModel.findOne({ email: req.body.email, password: crypto.createHash('md5').update(req.body.password).digest('hex') });
         console.log("User Data: ", userData);
 
         if (!userData) {
@@ -123,6 +161,42 @@ router.post("/login", celebrate({
                 message: "Login Successful"
             }, data: {
                 email: userData.email,
+                friendList: userData.friendList,
+                profilePictureMedia: userData.profilePictureMedia,
+                name: userData.name
+            }
+        });
+
+    } catch (e) {
+        console.log("er: ", e);
+        res.status(500).json({
+            api_response_info: {
+                status: 500,
+                message: e?.message
+            }, data: null
+        });
+    }
+});
+
+router.post("/profile", celebrate({
+    [Segments.BODY]: {
+        email: Joi.string().required(),
+    }
+}), async (req, res) => {
+
+    try {
+        const userData = await UserModel.findOne({ email: req.body.email }).populate("friendList");
+        console.log("User Data: ", userData);
+
+        if (!userData) {
+            throw new Error("Login Failed")
+        }
+        res.status(200).json({
+            api_response_info: {
+                status: 200,
+                message: "Profile Fetched Successful"
+            }, data: {
+                currentUser: userData.email,
                 friendList: userData.friendList
             }
         });
