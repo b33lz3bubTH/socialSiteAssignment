@@ -9,7 +9,8 @@ export default {
     imageView: (media) => `${server}/images/${media}`,
     update: () => `${server}/update/profile`,
     listAllUsers: () => `${server}/friend/all`,
-    addFriend: () => `${server}/friend/add`
+    addFriend: () => `${server}/friend/add`,
+    listAllFriends: (currentUser) => `${server}/profile/friends?email=${currentUser}`
 }
 
 export async function postData(url = '', data = {}, headers = {}) {

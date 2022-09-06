@@ -17,14 +17,14 @@ const defaultState = { name: '', email: '', isLoggedIn: false, friendList: [], p
 export const authStore = {
     init: () => authSubject.next({ ...defaultState }),
     subscribe: (setState => authSubject.subscribe(setState)),
-    signIn: async ({ email, friendList, name, profilePictureMedia }) => {
+    signIn: ({ email, friendList, name, profilePictureMedia }) => {
         const loginData = {
             email, friendList, name, profilePictureMedia, isLoggedIn: true
         }
         authSubject.next(loginData);
         persistToLocal(loginData);
     },
-    updateProfile: async ({ name, profilePictureMedia }) => {
+    updateProfile: ({ name, profilePictureMedia }) => {
         const sessionValue = localStorage.getItem("LOGIN_DATA");
         if (sessionValue) {
             const sessionData = JSON.parse(sessionValue);

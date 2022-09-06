@@ -178,14 +178,14 @@ router.post("/login", celebrate({
     }
 });
 
-router.post("/profile", celebrate({
-    [Segments.BODY]: {
+router.get("/profile/friends", celebrate({
+    [Segments.QUERY]: {
         email: Joi.string().required(),
     }
 }), async (req, res) => {
 
     try {
-        const userData = await UserModel.findOne({ email: req.body.email }).populate("friendList");
+        const userData = await UserModel.findOne({ email: req.query.email }).populate("friendList");
         console.log("User Data: ", userData);
 
         if (!userData) {

@@ -13,20 +13,28 @@ export default (props) => {
     const [isLoading, setLoading] = useState(null);
     const [serverResponse, setServerResponse] = useState(null);
 
+
     const userList = useFetch(API.listAllUsers());
 
-    const [authstoreState, setAuthStoreState] = useState();
+
+    const [authstoreState, setAuthStoreState] = useState(null);
 
     useEffect(() => {
         authStore.subscribe(setAuthStoreState);
+        console.log(authstoreState)
     }, [])
+
+    useEffect(() => {
+        console.log("authstoreState LIST ALL: ", authstoreState)
+    }, [authstoreState])
+
 
 
     const addFriend = (userToBeAdded) => {
         // callback to update new friend updated and load the friends section again.
-
+        console.log("authstoreState: ", authstoreState);
         postData(API.addFriend(), {
-            currentUser: authstoreState.email,
+            currentUser: authstoreState?.email,
             requestedUser: userToBeAdded,
         }).then((json) => {
             setServerResponse(json?.data);
@@ -37,22 +45,25 @@ export default (props) => {
                 return;
             }
             toast.success(json?.api_response_info?.message);
-            props?.setProfileTrigger(v4());
+            props?.requestTrigger();
         });
     }
 
     return (
         <div>
             <h1>All Profiles</h1>
-            <div style={{ maxHeight: '50vh', overflowY: 'auto', overflowX: 'hidden', padding: '2%' }}>
-                <Grid>
-                    {
-                        userList?.data?.data?.map(user => <Grid.Col xs={12} style={{ textAlign: 'left' }}>
-                            <UserProfileView profilePictureMedia={user?.profilePictureMedia} name={user.name} email={user.email} />
-                            <Button onClick={() => addFriend(user.email)}>Add As friend</Button>
-                        </Grid.Col>)
-                    }
-                </Grid>
+            <div style={{ maxHeight: '70vh', overflowY: 'auto', overflowX: 'hidden', padding: '2%' }}>
+                {
+                    authstoreState?.isLoggedIn ? <Grid>
+                        {
+                            userList?.data?.data?.map(user => <Grid.Col key={user.email} xs={12} style={{ textAlign: 'left' }}>
+                                <UserProfileView profilePictureMedia={user?.profilePictureMedia} name={user.name} email={user.email} />
+                                <Button onClick={() => addFriend(user.email)}>Add As friend</Button>
+                            </Grid.Col>)
+                        }
+                    </Grid> : null
+                }
+
             </div>
         </div>
     )
