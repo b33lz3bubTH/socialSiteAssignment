@@ -14,7 +14,7 @@ router.get('/friend/all', celebrate({
     try {
         const perPage = 50;
         const page = parseInt(req.query.page);
-        const userList = await UserModel.find({}, {}, { skip: (perPage * page), limit: perPage });
+        const userList = await UserModel.find({}, "-password -friendList", { skip: (perPage * page), limit: perPage },);
 
         res.status(200).json({
             api_response_info: {

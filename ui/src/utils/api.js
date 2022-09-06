@@ -7,7 +7,9 @@ export default {
     registration: () => `${server}/register`,
     login: () => `${server}/login`,
     imageView: (media) => `${server}/images/${media}`,
-    update: () => `${server}/update/profile`
+    update: () => `${server}/update/profile`,
+    listAllUsers: () => `${server}/friend/all`,
+    addFriend: () => `${server}/friend/add`
 }
 
 export async function postData(url = '', data = {}, headers = {}) {
