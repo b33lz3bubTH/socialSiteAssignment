@@ -1,6 +1,6 @@
 
 
-const server = "http://localhost:9988";
+const server = "http://139.59.89.220";
 
 export default {
     mediaUpload: () => `${server}/upload`,
